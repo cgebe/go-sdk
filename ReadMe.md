@@ -12,6 +12,10 @@ It includes the following core components:
 
 ## Install
 
+### Requirement
+
+Go version above 1.11
+
 ### Use go mod(recommend)
 
 Add "github.com/binance-chain/go-sdk" dependency into your go.mod file. Example:

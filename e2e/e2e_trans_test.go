@@ -17,7 +17,7 @@ import (
 )
 
 // After bnbchain integration_test.sh has runned
-func TestAllProcess(t *testing.T) {
+func TestTransProcess(t *testing.T) {
 	//----- Recover account ---------
 	mnemonic := "test mnemonic"
 	keyManager, err := keys.NewMnemonicKeyManager(mnemonic)
@@ -27,7 +27,7 @@ func TestAllProcess(t *testing.T) {
 	testAccount2 := testKeyManager2.GetAddr()
 
 	//-----   Init sdk  -------------
-	client, err := sdk.NewDexClient("https://testnet-dex.binance.org", types.TestNetwork, keyManager)
+	client, err := sdk.NewDexClient("testnet-dex.binance.org", types.TestNetwork, keyManager)
 	assert.NoError(t, err)
 	nativeSymbol := msg.NativeToken
 
@@ -78,7 +78,8 @@ func TestAllProcess(t *testing.T) {
 	fmt.Printf("Get time: %v \n", time)
 
 	//----- Create order -----------
-	createOrderResult, err := client.CreateOrder(tradeSymbol, nativeSymbol, msg.OrderSide.BUY, 30000000000, 10000000000000, true)
+	createOrderResult, err := client.CreateOrder(tradeSymbol, nativeSymbol, msg.OrderSide.SELL, 30000000000, 100000000, true)
+	fmt.Println(err)
 	assert.NoError(t, err)
 	assert.True(t, true, createOrderResult.Ok)
 
@@ -114,7 +115,7 @@ func TestAllProcess(t *testing.T) {
 	fmt.Printf("GetTx: %v\n", tx)
 
 	//----   Send tx  -----------
-	send, err := client.SendToken(testAccount2, nativeSymbol, 10000000000, true)
+	send, err := client.SendToken(testAccount2, nativeSymbol, 10, true)
 	assert.NoError(t, err)
 	assert.True(t, send.Ok)
 	fmt.Printf("Send token: %v\n", send)
@@ -129,19 +130,19 @@ func TestAllProcess(t *testing.T) {
 	}
 
 	//----   Freeze Token ---------
-	freeze, err := client.FreezeToken(nativeSymbol, 100000000, true)
+	freeze, err := client.FreezeToken(nativeSymbol, 100, true)
 	assert.NoError(t, err)
 	assert.True(t, freeze.Ok)
 	fmt.Printf("freeze token: %v\n", freeze)
 
 	//----   Unfreeze Token ---------
-	unfreeze, err := client.UnfreezeToken(nativeSymbol, 100000000, true)
+	unfreeze, err := client.UnfreezeToken(nativeSymbol, 100, true)
 	assert.NoError(t, err)
 	assert.True(t, unfreeze.Ok)
 	fmt.Printf("Unfreeze token: %v\n", unfreeze)
 
 	//----   issue token ---------
-	issue, err := client.IssueToken("Client-Token", "sdk", 10000000000000000, true, true)
+	issue, err := client.IssueToken("Client-Token", "sdk", 10000000000, true, true)
 	assert.NoError(t, err)
 	fmt.Printf("Issue token: %v\n", issue)
 
